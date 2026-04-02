@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Electricity Bill Input</title>
+</head>
+<body>
+    <h2>Electricity Bill Calculator</h2>
+    <form action="electricitybill.php" method="GET">
+        <p>
+            <label>CNo:</label><br>
+            <input type="text" name="cno" required>
+        </p>
+        <p>
+            <label>CName:</label><br>
+            <input type="text" name="cname" required>
+        </p>
+        <p>
+            <label>Previous Reading:</label><br>
+            <input type="number" name="pread" required>
+        </p>
+        <p>
+            <label>Current Reading:</label><br>
+            <input type="number" name="cread" required>
+        </p>
+        <p>
+            <input type="submit" value="Calculate Bill">
+        </p>
+    </form>
+</body>
+</html>
