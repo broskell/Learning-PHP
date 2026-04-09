@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Show Employee List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 30px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        .table-container {
+            max-width: 1000px;
+            margin: 30px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #0077b6;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:hover {
+            background: #f1f1f1;
+        }
+
+        .msg {
+            text-align: center;
+            margin-top: 20px;
+            font-weight: bold;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Employee List</h2>
+
+    <div class="table-container">
+        <table id="empTable">
+            <thead>
+                <tr id="tableHead"></tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+        </table>
+        <div class="msg" id="msg">Loading employee data...</div>
+    </div>
+
+    <script>
+        fetch('../api/getemplist.php')
+            .then(response => response.json())
+            .then(data => {
+                const tableHead = document.getElementById('tableHead');
+                const tableBody = document.getElementById('tableBody');
+                const msg = document.getElementById('msg');
+
+                if (!data || data.length === 0) {
+                    msg.textContent = "No employee data found";
+                    return;
+                }
+
+                msg.textContent = "";
+
+                const columns = Object.keys(data[0]);
+
+                columns.forEach(col => {
+                    const th = document.createElement('th');
+                    th.textContent = col;
+                    tableHead.appendChild(th);
+                });
+
+                data.forEach(row => {
+                    const tr = document.createElement('tr');
+
+                    columns.forEach(col => {
+                        const td = document.createElement('td');
+                        td.textContent = row[col];
+                        tr.appendChild(td);
+                    });
+
+                    tableBody.appendChild(tr);
+                });
+            })
+            .catch(error => {
+                document.getElementById('msg').textContent = "Error loading employee data";
+                console.error(error);
+            });
+    </script>
+
+</body>
+</html>
