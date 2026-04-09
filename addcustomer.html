@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Customer</title>
+    <style>
+        body { 
+            font-family: sans-serif; 
+            max-width: 500px; 
+            margin: 50px auto; 
+            padding: 20px; 
+            background: #f5f5f5;
+        }
+        .form-group { 
+            margin: 15px 0; 
+            text-align: left; 
+        }
+        label { 
+            display: block; 
+            margin-bottom: 5px; 
+            font-weight: bold; 
+        }
+        input, select { 
+            width: 100%; 
+            padding: 10px; 
+            border: 1px solid #ddd; 
+            border-radius: 4px; 
+            box-sizing: border-box; 
+        }
+        button { 
+            background: #007cba; 
+            color: white; 
+            padding: 12px 30px; 
+            border: none; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-size: 16px; 
+            width: 100%; 
+        }
+        button:hover { background: #005a87; }
+    </style>
+</head>
+<body>
+    <h2 style="text-align: center; color: #333;">Add New Customer</h2>
+
+    <form action="addcustomer.php" method="get">
+        <div class="form-group">
+            <label for="cid">Customer ID</label>
+            <input type="number" name="cid" id="cid" required>
+        </div>
+
+        <div class="form-group">
+            <label for="cname">Name</label>
+            <input type="text" name="cname" id="cname" required>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email" required>
+        </div>
+
+        <div class="form-group">
+            <label for="age">Age</label>
+            <input type="number" name="age" id="age" min="1" max="120" required>
+        </div>
+
+        <div class="form-group">
+            <label for="state">State</label>
+            <select name="state" id="state" required>
+                <option value="">Select State</option>
+                <option value="Andhra Pradesh">Andhra Pradesh</option>
+                <option value="Telangana">Telangana</option>
+                <option value="Karnataka">Karnataka</option>
+                <option value="Tamil Nadu">Tamil Nadu</option>
+                <option value="Kerala">Kerala</option>
+                <option value="Maharashtra">Maharashtra</option>
+                <option value="Gujarat">Gujarat</option>
+                <option value="Rajasthan">Rajasthan</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="city">City</label>
+            <select name="city" id="city" disabled required>
+                <option value="">First select state</option>
+            </select>
+        </div>
+
+        <button type="submit">Add Customer</button>
+    </form>
+
+    <script>
+        const apiURL = "https://raw.githubusercontent.com/sab99r/Indian-States-And-Districts/master/states-and-districts.json";
+        let locationData = [];
+
+        async function fetchLocations() {
+            try {
+                const response = await fetch(apiURL);
+                const data = await response.json();
+                locationData = data.states;
+                const stateSelect = document.getElementById('state');
+                locationData.forEach(item => {
+                    let option = document.createElement('option');
+                    option.value = item.state;
+                    option.textContent = item.state;
+                    stateSelect.appendChild(option);
+                });
+                filterCities();
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        }
+
+        function filterCities() {
+            const selectedState = document.getElementById('state').value;
+            const citySelect = document.getElementById('city');
+            citySelect.innerHTML = '<option value="">-- Select City --</option>';
+
+            if (selectedState) {
+                const stateObj = locationData.find(s => s.state === selectedState);
+                if (stateObj) {
+                    stateObj.districts.forEach(city => {
+                        let option = document.createElement('option');
+                        option.value = city;
+                        option.textContent = city;
+                        citySelect.appendChild(option);
+                    });
+                }
+            } else {
+                locationData.forEach(item => {
+                    item.districts.forEach(city => {
+                        let option = document.createElement('option');
+                        option.value = city;
+                        option.textContent = city;
+                        citySelect.appendChild(option);
+                    });
+                });
+            }
+        }
+
+        fetchLocations();
+    </script>
+</body>
+</html>
