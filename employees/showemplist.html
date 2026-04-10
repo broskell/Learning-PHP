@@ -71,7 +71,7 @@
     </div>
 
     <script>
-        fetch('../api/getemplist.php')
+        fetch('http://localhost/testing/api/getemplist.php')
             .then(response => response.json())
             .then(data => {
                 const tableHead = document.getElementById('tableHead');
