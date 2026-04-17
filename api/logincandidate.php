@@ -35,33 +35,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (!$candidate) {
             echo json_encode([
                 "status" => "error",
-                "message" => "Invalid IdNo or password"
+                "message" => "Candidate not found"
+            ], JSON_PRETTY_PRINT);
+            exit;
+        }
+
+        if ($candidate["isactive"] != true && $candidate["isactive"] != 1 && $candidate["isactive"] != 't') {
+            echo json_encode([
+                "status" => "error",
+                "message" => "Account is inactive"
             ], JSON_PRETTY_PRINT);
             exit;
         }
 
         $storedPassword = $candidate["password"];
 
-        $passwordMatched = false;
-
-        if ($password === $storedPassword) {
-            $passwordMatched = true;
-        } elseif (password_verify($password, $storedPassword)) {
-            $passwordMatched = true;
-        }
-
-        if (!$passwordMatched) {
+        if ($password !== $storedPassword) {
             echo json_encode([
                 "status" => "error",
-                "message" => "Invalid IdNo or password"
-            ], JSON_PRETTY_PRINT);
-            exit;
-        }
-
-        if (!$candidate["isactive"]) {
-            echo json_encode([
-                "status" => "error",
-                "message" => "Account is inactive"
+                "message" => "Invalid password"
             ], JSON_PRETTY_PRINT);
             exit;
         }
