@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customer Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.4);
+            z-index: 1000;
+        }
+
+        .popup-content {
+            background-color: white;
+            width: 300px;
+            padding: 20px;
+            border: 1px solid black;
+            margin: 100px auto;
+        }
+
+        .close {
+            float: right;
+            cursor: pointer;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <center><h1>Customer Login</h1></center>
+
+    <form action="process.php" method="post">
+        <table align="center" cellpadding="8">
+            <tr>
+                <td>Username</td>
+                <td><input type="text" name="username"></td>
+            </tr>
+            <tr>
+                <td>Password</td>
+                <td><input type="password" name="password"></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">
+                    <input type="submit" value="Login">
+                    <input type="button" value="New Registration" onclick="openPopup()">
+                </td>
+            </tr>
+        </table>
+    </form>
+
+    <div class="popup" id="popupBox">
+        <div class="popup-content">
+            <span class="close" onclick="closePopup()">X</span>
+            <h3>New Customer</h3>
+            <p>Select form:</p>
+            <p><a href="newcustomer.html">Open New Customer Form</a></p>
+            <p><a href="addcustomer.html">Open Add Customer Form</a></p>
+        </div>
+    </div>
+
+    <script>
+        function openPopup() {
+            document.getElementById("popupBox").style.display = "block";
+        }
+
+        function closePopup() {
+            document.getElementById("popupBox").style.display = "none";
+        }
+    </script>
+
+</body>
+</html>
